@@ -2,7 +2,7 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>YouTube Downloader Web</title>
+    <title>YouTube Downloader</title>
     <style>
         body {
             font-family: "Segoe UI", sans-serif;
@@ -28,6 +28,18 @@
         .video-btn { background-color: #ff4747; }
         .audio-btn { background-color: #4caf50; }
         .flash { margin: 20px; color: #ffcc00; }
+        #progress-container {
+            width: 50%;
+            background-color: #444;
+            margin: 20px auto;
+            border-radius: 5px;
+        }
+        #progress-bar {
+            width: 0%;
+            height: 20px;
+            background-color: #4caf50;
+            border-radius: 5px;
+        }
     </style>
 </head>
 <body>
@@ -40,11 +52,30 @@
       {% endif %}
     {% endwith %}
 
+    <p>Pasta de download: <b>{{ pasta_downloads }}</b></p>
+
     <form method="POST">
         <input type="text" name="url" placeholder="Cole o link do vídeo aqui...">
         <br>
         <button type="submit" name="tipo" value="video" class="video-btn">⬇️ Baixar vídeo</button>
         <button type="submit" name="tipo" value="audio" class="audio-btn">🎵 Baixar áudio (M4A)</button>
     </form>
+
+    <div id="progress-container">
+        <div id="progress-bar"></div>
+    </div>
+    <p id="status"></p>
+
+    <script>
+        function atualizarProgresso() {
+            fetch('/progresso')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('progress-bar').style.width = data.percent + '%';
+                document.getElementById('status').innerText = data.status;
+            });
+        }
+        setInterval(atualizarProgresso, 1000);
+    </script>
 </body>
 </html>
