@@ -15,7 +15,7 @@ def baixar_audio():
 # Função genérica de download
 def baixar(tipo):
     url = entry_url.get()
-    if not url or url == "Cole o link do vídeo aqui...":
+    if not url or url == "Cole o link do vídeo aqui":
         messagebox.showerror("Erro", "Por favor, cole o link do vídeo.")
         return
 
